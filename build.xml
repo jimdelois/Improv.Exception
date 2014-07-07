@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+		name="Improv Framework | Exception"
+		basedir="."
+		default="build"
+		description="The primary build file for the Improv Framework Exception Library"
+		>
+
+
+	<property name="exec.php" value="/usr/bin/php" override="true" />
+	<property name="dir.buildoutput" value="buildoutput" />
+
+
+	<!--
+	<property file="build.properties" />
+	-->
+
+
+
+	<tstamp>
+		<format property="timestamp" pattern="%Y-%m-%d %H:%M" />
+	</tstamp>
+
+
+
+	<target name="build" depends="prepare,test-unit,documentapi" />
+
+	<target name="clean">
+		<delete dir="${dir.buildoutput}" includeemptydirs="true" verbose="true" />
+	</target>
+
+
+
+
+	<target name="prepare" depends="clean" description="Prepares files and directories for build">
+		<mkdir dir="${dir.buildoutput}" />
+	</target>
+
+
+
+
+	<target name="lint">
+		<phplint deprecatedAsError="true" haltonfailure="true">
+			<fileset dir="src">
+				<include name="**/*.php"/>
+			</fileset>
+			<fileset dir="tests">
+				<include name="**/*.php"/>
+			</fileset>
+		</phplint>
+	</target>
+
+
+	<target name="documentapi">
+		<includepath classpath="./vendor/phpdocumentor" />
+
+		<mkdir dir="${dir.buildoutput}/docs/api" />
+
+		<phpdoc2 title="API Documentation"
+				 destdir="${dir.buildoutput}/docs/api"
+				 template="clean">
+			<fileset dir="./src">
+				<include name="**/*.php" />
+			</fileset>
+		</phpdoc2>
+	</target>
+
+
+
+
+
+
+	<target name="test-unit" depends="lint">
+		<exec
+				executable="${exec.php}"
+				dir="tests"
+				checkreturn="true"
+				>
+			<!-- Consider using 'passthru="true"' as an "exec" attribute... -->
+			<arg path="../vendor/bin/phpunit" />
+			<!-- <arg value="- -testdox" /> -->
+
+
+
+		</exec>
+
+		<mkdir dir="${dir.buildoutput}/phpunit-report-html" />
+
+		<phpunitreport infile="${dir.buildoutput}/phpunit-log-junit.xml"
+					   format="frames"
+					   todir="${dir.buildoutput}/phpunit-report-html"
+				/>
+	</target>
+
+
+
+
+	<target name="package" depends="build">
+
+
+		<mkdir dir="${dir.buildoutput}/artifacts/src-package" />
+
+		<copy todir="${dir.buildoutput}/artifacts/src-package" >
+			<fileset dir=".">
+				<include name="src/**/*" />
+				<include name="tests/**/*" />
+			</fileset>
+			<filelist dir="." files="composer.json,LICENSE,README.md"/>
+		</copy>
+
+		<exec
+				executable="tar"
+				checkreturn="true"
+				dir="${dir.buildoutput}/artifacts"
+				>
+			<arg value="-cvzf" /><arg path="src-package.tar.gz" />
+			<arg path="src-package/" />
+		</exec>
+
+		<delete dir="${dir.buildoutput}/artifacts/src-package" includeemptydirs="true" verbose="true" />
+	</target>
+
+
+
+</project>
