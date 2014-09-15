@@ -54,17 +54,17 @@ class Exception extends \Exception {
 		$args = func_get_args( );
 
 		if ( ! isset( $args[ 0 ] ) ) {
-			throw new \UnexpectedValueException( 'Must supply at least one parameter to the Exception constructor.' );
+			throw new \InvalidArgumentException( 'Must supply at least one parameter to the Exception constructor.' );
 		}
 
 		$first = $args[ 0 ];
 		if ( ! is_string( $first ) ) {
-			throw new \UnexpectedValueException( sprintf( 'First argument must be "string", received "%s".' , gettype( $first ) ) );
+			throw new \InvalidArgumentException( sprintf( 'First argument must be "string", received "%s".' , gettype( $first ) ) );
 		}
 
 		foreach ( $args as $k => $v ) {
 			if ( is_object( $v ) ) {
-				throw new \UnexpectedValueException( sprintf( 'Cannot pass "object" as parameter to Exception constructor.' ) );
+				throw new \InvalidArgumentException( sprintf( 'Cannot pass "object" as parameter to Exception constructor.' ) );
 			}
 		}
 

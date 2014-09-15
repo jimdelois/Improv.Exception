@@ -4,7 +4,7 @@
 namespace Improv\Tests\Unit\Exception;
 
 use \ContextSpecification\Framework\Concern;
-use ContextSpecification\Framework\StaticConcern;
+use \ContextSpecification\Framework\StaticConcern;
 use \Improv\Exception\Exception;
 
 
@@ -25,10 +25,10 @@ class When_passing_nothing_to_the_constructor extends StaticConcern {
 	 * @test
 	 */
 	public function should_throw_exception( ) {
-//		$this->setExpectedException( '\UnexpectedValueException' );
+//		$this->setExpectedException( '\InvalidArgumentException' );
 //		$this->releaseException( );
 		$this->captureException( );
-		$this->assertInstanceOf( '\UnexpectedValueException' , $this->exception );
+		$this->assertInstanceOf( '\InvalidArgumentException' , $this->exception );
 		$this->assertEquals( 'Must supply at least one parameter to the Exception constructor.' , $this->exception->getMessage( ) );
 	}
 }
@@ -51,7 +51,7 @@ class When_first_argument_to_constructor_is_not_a_string extends StaticConcern {
 	 */
 	public function should_throw_exception( ) {
 		$this->captureException( );
-		$this->assertInstanceOf( '\UnexpectedValueException' , $this->exception );
+		$this->assertInstanceOf( '\InvalidArgumentException' , $this->exception );
 		$this->assertEquals( 'First argument must be "string", received "integer".' , $this->exception->getMessage( ) );
 	}
 }
@@ -69,7 +69,7 @@ class When_any_argument_to_constructor_is_an_object extends StaticConcern {
 
 
 	protected function because( ) {
-		new Exception( 'String as second param' , 24 , 'Another string' , new \stdClass() , 'Final string' );
+		new Exception( 'String as first param' , 24 , 'Another string' , new \stdClass() , 'Final string' );
 	}
 
 	/**
@@ -77,7 +77,7 @@ class When_any_argument_to_constructor_is_an_object extends StaticConcern {
 	 */
 	public function should_throw_exception( ) {
 		$this->captureException( );
-		$this->assertInstanceOf( '\UnexpectedValueException' , $this->exception );
+		$this->assertInstanceOf( '\InvalidArgumentException' , $this->exception );
 		$this->assertEquals( 'Cannot pass "object" as parameter to Exception constructor.' , $this->exception->getMessage( ) );
 	}
 }
@@ -136,7 +136,7 @@ class When_providing_format_string_and_one_additional_argument extends BasePosit
 	/**
 	 * @test
 	 */
-	public function should_have_correctly_tokenized_string( ) {
+	public function should_have_correctly_rendered_string_tokenized_with_the_one_parameter( ) {
 		$this->assertMessageEquality( );
 	}
 }
@@ -156,7 +156,7 @@ class When_providing_format_string_and_three_additional_arguments extends BasePo
 	/**
 	 * @test
 	 */
-	public function should_have_correctly_tokenized_string( ) {
+	public function should_have_correctly_rendered_string_tokenized_with_the_three_parameters( ) {
 		$this->assertMessageEquality( );
 	}
 }
