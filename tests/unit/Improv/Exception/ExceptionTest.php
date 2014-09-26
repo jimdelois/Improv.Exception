@@ -91,7 +91,6 @@ class When_any_argument_to_constructor_is_an_object extends StaticConcern {
 abstract class BasePositiveScenarioMessageTokenizationConcern extends Concern {
 
 	protected $arg_1 , $arg_2 , $arg_3 , $arg_4;
-	protected $result_actual , $result_expected;
 
 	protected function createSUT( ) {
 		return new Exception( $this->arg_1 , $this->arg_2 , $this->arg_3 , $this->arg_4 );
