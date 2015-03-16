@@ -1,15 +1,10 @@
 <?php
 
 
-namespace Improv\Tests\Unit\Exception;
+namespace Improv\Exception;
 
-use \ContextSpecification\Framework\Concern;
-use \ContextSpecification\Framework\StaticConcern;
-use \Improv\Exception\Exception;
-
-
-
-
+use ContextSpecification\Framework\Concern;
+use ContextSpecification\Framework\StaticConcern;
 
 class When_passing_nothing_to_the_constructor extends StaticConcern {
 
@@ -25,8 +20,6 @@ class When_passing_nothing_to_the_constructor extends StaticConcern {
 	 * @test
 	 */
 	public function should_throw_exception( ) {
-//		$this->setExpectedException( '\InvalidArgumentException' );
-//		$this->releaseException( );
 		$this->captureException( );
 		$this->assertInstanceOf( '\InvalidArgumentException' , $this->exception );
 		$this->assertEquals( 'Must supply at least one parameter to the Exception constructor.' , $this->exception->getMessage( ) );
